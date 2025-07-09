@@ -51,35 +51,35 @@ void PhoneBook::search() {
 	_printContact(1);
 	
 	cout << "Enter the index of the contact you want to view: ";
-	size_t i;
-	cin >> i;
+	size_t index;
+	cin >> index;
 
 	// Exit if the index is invalid
-	if (i >= _contacts.size()) {
+	if (index >= _contacts.size()) {
 		cout << "Invalid index.\n";
 		_clearScreen(1);
 		return;
 	}
 
-	_searchViewDetail(i);
-	if (_searchAddBookmark(i)) {
+	_searchViewDetail(index);
+	if (_searchAddBookmark(index)) {
 		_holdScreen();
 	}
 	_clearScreen(0);
 }
 
 void PhoneBook::_searchViewDetail(size_t i) const {
-	for (auto& s: _contacts[i]) {
-		cout << s << "\n";
+	for (auto& field: _contacts[i]) {
+		cout << field << "\n";
 	}
 }
 
 bool PhoneBook::_searchAddBookmark(size_t i) {
 	cout << "Do you want to bookmark this contact? (y/n): ";
-	char c;
-	cin >> c;
+	char res;
+	cin >> res;
 
-	if (c == 'y' || c == 'Y') {
+	if (res == 'y' || res == 'Y') {
 		if (find(_bookmarks.begin(), _bookmarks.end(), _contacts[i][NAME]) != _bookmarks.end()) {
 			cout << "Contact already bookmarked.\n";
 		} else {
