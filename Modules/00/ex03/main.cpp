@@ -19,40 +19,11 @@ int main() {
 		}
 		
 		switch (PhoneBook::actions.at(op)) {
-			case PhoneBook::ADD: {
-				string name, number, nickname;
-
-				cout << "Enter name: ";
-				cin >> name;
-				cout << "Enter phone number: ";
-				cin >> number;
-				cout << "Enter nickname: ";
-				cin >> nickname;
-
-				book.add(name, number, nickname);
-				break;
-			}
-			case PhoneBook::SEARCH: {
-				book.search();
-				break;
-			}
-			case PhoneBook::REMOVE: {
-				cout << "Enter index or phone number to remove: ";
-				string target;
-				cin >> target;
-
-				if (target.length() < 3) {
-					book.remove(static_cast<size_t>(stoi(target)));
-				} else {
-					book.remove(target);
-				}
-				break;
-			}
-			case PhoneBook::BOOKMARK: {
-				book.bookmark();
-				break;
-			}
-			case PhoneBook::EXIT: {
+			case PhoneBook::ADD			: book.add(); break;
+			case PhoneBook::SEARCH		: book.search(); break;
+			case PhoneBook::REMOVE		: book.remove(); break;
+			case PhoneBook::BOOKMARK	: book.bookmark(); break;
+			case PhoneBook::EXIT		: {
 				cout << "Exiting the program.\n";
 				break;
 			}

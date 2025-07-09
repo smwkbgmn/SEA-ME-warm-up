@@ -18,13 +18,24 @@ const map<string, PhoneBook::ContactActions> PhoneBook::actions = {
 PhoneBook::PhoneBook() {}
 PhoneBook::~PhoneBook() {}
 
-void PhoneBook::add(const string &name, const string &number, const string &nickname) {
-	if (_contacts.size() < MAX_CONTACTS) {
-		_contacts.push_back({name, number, nickname});
-	} else {
-		cout << "PhoneBook is full. Remove the oldest contact first.\n";
+void PhoneBook::add() {
+	if (_contacts.size() >= MAX_CONTACTS) {
+		cout << "PhoneBook is full. Remove any contact first.\n";
+		_clearScreen(1);
+		return;
 	}
 
+	string name, number, nickname;
+
+	cout << "Enter name: ";
+	cin >> name;
+	cout << "Enter phone number: ";
+	cin >> number;
+	cout << "Enter nickname: ";
+	cin >> nickname;
+
+	_contacts.push_back({name, number, nickname});
+	
 	cout << "Contact added!\n" << name + "\n" + number + "\n" + nickname + "\n";
 	_clearScreen(1);
 }
@@ -80,10 +91,28 @@ bool PhoneBook::_searchAddBookmark(size_t i) {
 	return false;
 }
 
-void PhoneBook::remove(size_t i) {
+void PhoneBook::remove() {
+	if (_contacts.empty()) {
+		cout << "No contacts available to remove.\n";
+		_clearScreen(1);
+		return;
+	}
+
+	cout << "Enter index or phone number to remove: ";
+	string target;
+	cin >> target;
+
+	if (target.length() < 3) {
+		_removeByIndex(stoi(target));
+	} else {
+		_removeByNumber(target);
+	}
+	_clearScreen(1);
+}
+
+void PhoneBook::_removeByIndex(size_t i) {
 	if (i >= _contacts.size()) {
 		cout << "Invalid index.\n";
-		_clearScreen(1);
 		return;
 	}
 
@@ -91,10 +120,9 @@ void PhoneBook::remove(size_t i) {
 	_contacts.erase(_contacts.begin() + i);
 
 	cout << "Contact removed.\n";
-	_clearScreen(1);
 }
 
-void PhoneBook::remove(const string& number) {
+void PhoneBook::_removeByNumber(const string& number) {
 	auto it = find_if(_contacts.begin(), _contacts.end(), [&number](const vector<string>& contact) {
 		return contact[NUMBER] == number;
 	});
@@ -107,7 +135,6 @@ void PhoneBook::remove(const string& number) {
 	} else {
 		cout << "No contact found with number " << number << ".\n";
 	}
-	_clearScreen(1);
 }
 
 void PhoneBook::bookmark() const {

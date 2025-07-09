@@ -30,9 +30,8 @@ class PhoneBook {
 		PhoneBook();
 		~PhoneBook();
 		
-		void add(const std::string &, const std::string &, const std::string &);
-		void remove(size_t);
-		void remove(const std::string&);
+		void add();
+		void remove();
 		void search();
 		void bookmark() const;
 		
@@ -45,6 +44,8 @@ class PhoneBook {
 		void _printContact(const std::list<std::string>&) const;
 		void _searchViewDetail(size_t) const;
 		bool _searchAddBookmark(size_t);
+		void _removeByIndex(size_t);
+		void _removeByNumber(const std::string&);
 		void _holdScreen() const;
 		void _clearScreen(int) const;
 };
