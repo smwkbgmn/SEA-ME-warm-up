@@ -8,38 +8,41 @@ using namespace std;
 
 // Action names to enum mapping for readability
 const map<string, PhoneBook::ContactActions> PhoneBook::actions = {
-    {"add", PhoneBook::ADD},
-    {"search", PhoneBook::SEARCH},
-    {"remove", PhoneBook::REMOVE},
-    {"bookmark", PhoneBook::BOOKMARK},
-	{"exit", PhoneBook::EXIT}
+    {"add", 		PhoneBook::ADD},
+    {"search",		PhoneBook::SEARCH},
+    {"remove",		PhoneBook::REMOVE},
+    {"bookmark",	PhoneBook::BOOKMARK},
+	{"exit",		PhoneBook::EXIT}
 };
 
+// Constructor and Destructor
 PhoneBook::PhoneBook() {}
 PhoneBook::~PhoneBook() {}
 
+// Add a new contact to the phone book
 void PhoneBook::add() {
+	// Exit if the phone book is full
 	if (_contacts.size() >= MAX_CONTACTS) {
 		cout << "PhoneBook is full. Remove any contact first.\n";
 		_clearScreen(1);
 		return;
 	}
 
-	string name, number, nickname;
-
+	string s1, s2, s3;
 	cout << "Enter name: ";
-	cin >> name;
+	cin >> s1;
 	cout << "Enter phone number: ";
-	cin >> number;
+	cin >> s2;
 	cout << "Enter nickname: ";
-	cin >> nickname;
+	cin >> s3;
 
-	_contacts.push_back({name, number, nickname});
+	_contacts.push_back({s1, s2, s3});
 	
-	cout << "Contact added!\n" << name + "\n" + number + "\n" + nickname + "\n";
+	cout << "Contact added!\n" << s1 + "\n" + s2 + "\n" + s3 + "\n";
 	_clearScreen(1);
 }
 
+// List added contacts and allow searching with bookmarking
 void PhoneBook::search() {
 	// Exit if no contacts are available
 	if (_contacts.empty()) {
@@ -51,35 +54,34 @@ void PhoneBook::search() {
 	_printContact(1);
 	
 	cout << "Enter the index of the contact you want to view: ";
-	size_t index;
-	cin >> index;
+	size_t i;
+	cin >> i;
 
 	// Exit if the index is invalid
-	if (index >= _contacts.size()) {
+	if (i >= _contacts.size()) {
 		cout << "Invalid index.\n";
 		_clearScreen(1);
 		return;
 	}
 
-	_searchViewDetail(index);
-	if (_searchAddBookmark(index)) {
+	_searchViewDetail(i);
+	if (_searchAddBookmark(i))
 		_holdScreen();
-	}
 	_clearScreen(0);
 }
 
 void PhoneBook::_searchViewDetail(size_t i) const {
-	for (auto& field: _contacts[i]) {
-		cout << field << "\n";
+	for (auto& s: _contacts[i]) {
+		cout << s << "\n";
 	}
 }
 
 bool PhoneBook::_searchAddBookmark(size_t i) {
 	cout << "Do you want to bookmark this contact? (y/n): ";
-	char res;
-	cin >> res;
+	char c;
+	cin >> c;
 
-	if (res == 'y' || res == 'Y') {
+	if (c == 'y' || c == 'Y') {
 		if (find(_bookmarks.begin(), _bookmarks.end(), _contacts[i][NAME]) != _bookmarks.end()) {
 			cout << "Contact already bookmarked.\n";
 		} else {
@@ -91,6 +93,7 @@ bool PhoneBook::_searchAddBookmark(size_t i) {
 	return false;
 }
 
+// Remove a contact by index or phone number
 void PhoneBook::remove() {
 	if (_contacts.empty()) {
 		cout << "No contacts available to remove.\n";
@@ -99,18 +102,18 @@ void PhoneBook::remove() {
 	}
 
 	cout << "Enter index or phone number to remove: ";
-	string target;
-	cin >> target;
+	string s;
+	cin >> s;
 
-	if (target.length() < 3) {
-		_removeByIndex(stoi(target));
-	} else {
-		_removeByNumber(target);
-	}
+	if (s.length() < 3)
+		_removeByIndex(stoi(s));
+	else
+		_removeByNumber(s);
 	_clearScreen(1);
 }
 
 void PhoneBook::_removeByIndex(size_t i) {
+	// Exit if the index is invalid
 	if (i >= _contacts.size()) {
 		cout << "Invalid index.\n";
 		return;
@@ -137,7 +140,9 @@ void PhoneBook::_removeByNumber(const string& number) {
 	}
 }
 
+// List all bookmarks
 void PhoneBook::bookmark() const {
+	// Exit if no bookmarks are available
 	if (_bookmarks.empty()) {
 		cout << "No bookmarks available.\n";
 		_clearScreen(1);
@@ -149,6 +154,7 @@ void PhoneBook::bookmark() const {
 	_clearScreen(1);
 }
 
+// Utility functions
 void PhoneBook::_printContact(int field) const {
 	for (int i = 0; i < static_cast<int>(_contacts.size()); ++i) {
 		cout << i << " | ";
@@ -156,11 +162,8 @@ void PhoneBook::_printContact(int field) const {
 		for (int j = 0; j < field; ++j) {
 			cout << _contacts[i][j];
 
-			if (j + 1 < field) {
-				cout << ", ";
-			} else {
-				cout << "\n";
-			}
+			if (j + 1 < field) cout << ", ";
+			else cout << "\n";
 		}
 	}
 }

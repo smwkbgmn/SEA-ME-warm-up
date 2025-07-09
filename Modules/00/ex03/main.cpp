@@ -17,7 +17,7 @@ int main() {
 			cout << "Invalid action. Please try again.\n";
 			continue;
 		}
-		
+
 		switch (PhoneBook::actions.at(op)) {
 			case PhoneBook::ADD			: book.add(); break;
 			case PhoneBook::SEARCH		: book.search(); break;
@@ -29,5 +29,6 @@ int main() {
 			}
 		}
 	}
+
 	return 0;
 }
